@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:utext="${title}"></title>
+</head>
+<body>
+<div>
+    <form role="form" th:action="@{/merchant/signup}" th:method="post" th:object="${merchant}">
+      <label>Username</label>
+        <input type="text" id="username" name="username" required>
+
+        <label>Password</label>
+        <input type="password" id="password" name="password" required minlength="8">
+
+        <label for="name">Merchant Name</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="mail">Mail ID</label>
+        <input type="text" id="mail" name="mail" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+
+        <input type="submit">
+    </form>
+</div>
+</body>
+</html>
