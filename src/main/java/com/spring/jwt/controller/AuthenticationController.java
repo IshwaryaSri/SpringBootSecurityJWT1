@@ -3,6 +3,7 @@ package com.spring.jwt.controller;
 import com.spring.jwt.entity.Users;
 import com.spring.jwt.models.AuthenticationRequest;
 import com.spring.jwt.models.AuthenticationResponse;
+import com.spring.jwt.repository.UsersRepository;
 import com.spring.jwt.service.UsersService;
 import com.spring.jwt.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Controller
 public class AuthenticationController {
 
     @Autowired
     UsersService usersService;
+
+    @Autowired
+    UsersRepository usersRepository;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -45,23 +51,9 @@ public class AuthenticationController {
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
-    @PostMapping("/user/signup")
-    public ResponseEntity<?> saveUser(@RequestBody Users user) throws Exception {
-        return ResponseEntity.ok(usersService.save(user));
-    }
-
-    @PostMapping("/user/login")
-    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
-        HttpHeaders responseHeaders = new HttpHeaders();
-        Authentication authenticate = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-        final UserDetails userDetails = usersService.loadUserByUsername(authenticationRequest.getUsername());
-        final String jwt = jwtUtil.generateToken(userDetails);
-        AuthenticationResponse response = new AuthenticationResponse(jwt);
 
 
-        return new ResponseEntity<>(response, responseHeaders, HttpStatus.OK);
-    }
+
 
 
 }

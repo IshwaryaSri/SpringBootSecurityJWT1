@@ -29,9 +29,23 @@ public class UsersService implements UserDetailsService {
     }
 
     public Users save(Users user) {
-        Users newUser = new Users();
-        newUser.setUsername(user.getUsername());
-        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(newUser);
+        Users userdetails = new Users (user.getUsername(),passwordEncoder.encode(user.getPassword()));
+        userRepository.save(userdetails);
+        return userdetails;
+    }
+
+    public Users saveToken(String username,String token) {
+        Users user = userRepository.findByUsername(username);
+        user.setToken(token);
+        userRepository.save(user);
+        return user;
+    }
+
+    public boolean existsByUsername(String username){
+        boolean userExists = false;
+        if(userRepository.existsByUsername(username)){
+            userExists =true;
+        }
+        return userExists;
     }
 }

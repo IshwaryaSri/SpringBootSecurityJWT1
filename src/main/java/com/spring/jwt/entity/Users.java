@@ -21,9 +21,7 @@ public class Users {
         this.password = password;
     }
 
-    public Users(String username, String password, String token) {
-        this.username = username;
-        this.password = password;
+    public Users(String token) {
         this.token = token;
     }
 
