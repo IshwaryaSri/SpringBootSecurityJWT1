@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import com.spring.jwt.oauth.CustomOAuth2UserService;
 
 @EnableWebSecurity
 @Configuration
@@ -24,11 +25,16 @@ public class UserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UsersService usersService;
 
+
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
     @Autowired
     CustomUserAuthenticationHandler customSuccesshandler;
+
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -45,29 +51,22 @@ public class UserSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable();
 
-        http.authorizeRequests()
-                .antMatchers("/authenticate").permitAll()
-                .antMatchers("/**","/user/**","/user/login","/user/signup").permitAll()
-                .antMatchers("/v2/api-docs",
-                        "/swagger-resources/**",
-                        "/swagger-ui.html**",
-                        "/webjars/**").permitAll()
+        http
+                .antMatcher("/**")
+                .authorizeRequests()
+                .antMatchers("/**","/oauth2/**","/user/**").permitAll()
                 .anyRequest().authenticated().and()
-                .formLogin()
-                .loginPage("/user/login")
+                .oauth2Login()
+//                .loginPage("/user/login")
+                .userInfoEndpoint().userService(customOAuth2UserService)
+                .and()
                 .successHandler(customSuccesshandler)
-                .failureUrl("/user/error")
-                .permitAll().and()
-//                .logout().logoutUrl("/user/logout")
-//                .logoutSuccessUrl("/user/login?logout=true")
-//                .invalidateHttpSession(true)
-//                .deleteCookies("JSESSIONID")
-//                .clearAuthentication(true)
-//                .permitAll().and()
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }

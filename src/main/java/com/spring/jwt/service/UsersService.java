@@ -1,6 +1,7 @@
 package com.spring.jwt.service;
 
 import com.spring.jwt.UserPrincipal;
+import com.spring.jwt.entity.AuthenticationProvider;
 import com.spring.jwt.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.spring.jwt.repository.UsersRepository;
+
+import java.util.Date;
 
 @Service
 public class UsersService implements UserDetailsService {
@@ -20,8 +23,8 @@ public class UsersService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        Users user = userRepository.findByUsername(userName);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Users user = userRepository.findByEmail(email);
         if(user==null)
             throw new UsernameNotFoundException("User 404");
 
@@ -29,23 +32,31 @@ public class UsersService implements UserDetailsService {
     }
 
     public Users save(Users user) {
-        Users userdetails = new Users (user.getUsername(),passwordEncoder.encode(user.getPassword()));
+        Users userdetails = new Users (user.getEmail(),passwordEncoder.encode(user.getPassword()));
         userRepository.save(userdetails);
         return userdetails;
     }
 
-    public Users saveToken(String username,String token) {
-        Users user = userRepository.findByUsername(username);
+    public Users saveToken(String email,String token) {
+        Users user = userRepository.findByEmail(email);
         user.setToken(token);
         userRepository.save(user);
         return user;
     }
 
-    public boolean existsByUsername(String username){
+    public boolean existsByEmail(String username){
         boolean userExists = false;
-        if(userRepository.existsByUsername(username)){
+        if(userRepository.existsByEmail(username)){
             userExists =true;
         }
         return userExists;
+    }
+
+    public void saveOAuth2LoginUser(String email,AuthenticationProvider provider) {
+        Users user = new Users();
+        user.setEmail(email);
+        user.setJoiningDate(new Date());
+        user.setAuthProvider(provider);
+        userRepository.save(user);
     }
 }

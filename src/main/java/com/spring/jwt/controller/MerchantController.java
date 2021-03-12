@@ -1,15 +1,15 @@
 package com.spring.jwt.controller;
 
-import com.spring.jwt.entity.MerchantSeller;
-import com.spring.jwt.entity.Users;
+import com.spring.jwt.entity.Merchants;
 import com.spring.jwt.service.MerchantSellerService;
+import com.spring.jwt.service.MerchantTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,22 +20,25 @@ public class MerchantController {
     @Autowired
     MerchantSellerService merchantService;
 
+    @Autowired
+    MerchantTypeService merchantTypeService;
+
     @GetMapping("/merchant/login")
     public String login() {
         return "merchantlogin";
     }
 
     @GetMapping("/merchant/signup")
-    public String signUp() {
-
+    public String signUp(Model model) {
+        model.addAttribute("merchantTypes",merchantTypeService.findAll());
         return "merchantsignup";
     }
 
-    @PostMapping("/merchant/signup")
-    public String saveMerchant(MerchantSeller merchant) throws Exception {
-        boolean merchantExists = merchantService.existsByUsername(merchant.getUsername());
+        @RequestMapping(value={"/merchant/signup"}, method = RequestMethod.POST)
+    public String saveMerchant(Merchants merchant, @RequestParam int typeId) throws Exception {
+        boolean merchantExists = merchantService.existsByUsername(merchant.getEmail());
         if(merchantExists!=true) {
-            MerchantSeller newMerchant = merchantService.save(merchant);
+            Merchants newMerchant = merchantService.save(merchant,typeId);
             return "signupsuccess";
         }else{
             return "error";

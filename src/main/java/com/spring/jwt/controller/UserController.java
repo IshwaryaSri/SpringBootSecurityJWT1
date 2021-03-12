@@ -33,7 +33,7 @@ public class UserController {
 
     @GetMapping("/user/login")
     public String login() {
-        return "userlogin";
+        return "welcomeUser";
     }
 
     @GetMapping("/user/signup")
@@ -44,7 +44,7 @@ public class UserController {
 
     @PostMapping("/user/signup")
     public String saveUser(Users user) throws Exception {
-        boolean userExists = usersService.existsByUsername(user.getUsername());
+        boolean userExists = usersService.existsByEmail(user.getEmail());
         if(userExists!=true) {
             Users newUser = usersService.save(user);
             return "signupsuccess";

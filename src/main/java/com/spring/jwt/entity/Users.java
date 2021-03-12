@@ -1,6 +1,7 @@
 package com.spring.jwt.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "users")
@@ -9,15 +10,28 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String username;
+
+    @Column(name="email")
+    private String email;
+
+    @Column(name="password")
     private String password;
+
+    @Column(name="token")
     private String token;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="auth_provider")
+    private AuthenticationProvider authProvider;
+
+    @Column(name="joining_date")
+    private Date joiningDate;
 
     public Users() {
     }
 
-    public Users(String username, String password) {
-        this.username = username;
+    public Users(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
@@ -33,12 +47,12 @@ public class Users {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -55,5 +69,21 @@ public class Users {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public AuthenticationProvider getAuthProvider() {
+        return authProvider;
+    }
+
+    public void setAuthProvider(AuthenticationProvider authProvider) {
+        this.authProvider = authProvider;
+    }
+
+    public Date getJoiningDate() {
+        return joiningDate;
+    }
+
+    public void setJoiningDate(Date joiningDate) {
+        this.joiningDate = joiningDate;
     }
 }

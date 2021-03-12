@@ -6,17 +6,23 @@
 <body>
 <div>
     <form role="form" th:action="@{/merchant/signup}" th:method="post" th:object="${merchant}">
-      <label>Username</label>
-        <input type="text" id="username" name="username" required>
+      <label>Email</label>
+        <input type="text" id="email" name="email" required  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
 
         <label>Password</label>
         <input type="password" id="password" name="password" required minlength="8">
 
-        <label for="name">Merchant Name</label>
-        <input type="text" id="name" name="name" required>
-
-        <label for="mail">Mail ID</label>
-        <input type="text" id="mail" name="mail" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+        <label>Select Merchant Type</label>
+        <select name="typeId" id="typeId" required>
+            <option value = "">Select one</option>
+            <option th:each="type: ${merchantTypes}"   th:text="${type.merchantTypeName}"
+                    th:value="${type.id}"></option>
+<!--            <option value = "1">Merchant Seller</option>-->
+<!--            <option value = "2">Merchant Studio</option>-->
+<!--            <option value = "3">Merchant Stylists</option>-->
+<!--            <option value = "4">Merchant Dermatoligists</option>-->
+<!--            <option value = "5">Merchant Beauty Experts</option>-->
+        </select>
 
         <input type="submit">
     </form>

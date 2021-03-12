@@ -1,6 +1,6 @@
 package com.spring.jwt;
 
-import com.spring.jwt.entity.MerchantSeller;
+import com.spring.jwt.entity.Merchants;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,9 +10,9 @@ import java.util.Collections;
 
 public class MerchantPrincipal implements UserDetails {
 
-    private MerchantSeller merchant;
+    private Merchants merchant;
 
-    public MerchantPrincipal(MerchantSeller merchant) {
+    public MerchantPrincipal(Merchants merchant) {
         super();
         this.merchant = merchant;
     }
@@ -33,7 +33,7 @@ public class MerchantPrincipal implements UserDetails {
     @Override
     public String getUsername() {
         // TODO Auto-generated method stub
-        return merchant.getUsername();
+        return merchant.getEmail();
     }
 
     @Override
