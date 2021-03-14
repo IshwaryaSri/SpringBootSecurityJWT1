@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:utext="${title}"></title>
+</head>
+<body>
+<div>
+    <form role="form" th:action="@{/admin/signup}" th:method="post" th:object="${merchant}">
+        <label>Email</label>
+        <input type="text" id="email" name="email" required  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+
+        <label>Password</label>
+        <input type="password" id="password" name="password" required minlength="8">
+
+        <label>Select Admin Type</label>
+        <select name="typeId" id="typeId" required>
+            <option value = "">Select one</option>
+            <option th:each="type: ${adminTypesList}"   th:text="${type.adminTypeName}"
+                    th:value="${type.id}"></option>
+        </select>
+
+        <input type="submit">
+    </form>
+</div>
+</body>
+</html>
