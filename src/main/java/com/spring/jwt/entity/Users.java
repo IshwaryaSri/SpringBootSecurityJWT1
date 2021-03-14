@@ -20,9 +20,8 @@ public class Users {
     @Column(name="token")
     private String token;
 
-    @Enumerated(EnumType.STRING)
     @Column(name="auth_provider")
-    private AuthenticationProvider authProvider;
+    private String authProvider;
 
     @Column(name="joining_date")
     private Date joiningDate;
@@ -71,11 +70,11 @@ public class Users {
         this.token = token;
     }
 
-    public AuthenticationProvider getAuthProvider() {
+    public String getAuthProvider() {
         return authProvider;
     }
 
-    public void setAuthProvider(AuthenticationProvider authProvider) {
+    public void setAuthProvider(String authProvider) {
         this.authProvider = authProvider;
     }
 

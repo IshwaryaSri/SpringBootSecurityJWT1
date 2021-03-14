@@ -17,11 +17,6 @@
             <option value = "">Select one</option>
             <option th:each="type: ${merchantTypes}"   th:text="${type.merchantTypeName}"
                     th:value="${type.id}"></option>
-<!--            <option value = "1">Merchant Seller</option>-->
-<!--            <option value = "2">Merchant Studio</option>-->
-<!--            <option value = "3">Merchant Stylists</option>-->
-<!--            <option value = "4">Merchant Dermatoligists</option>-->
-<!--            <option value = "5">Merchant Beauty Experts</option>-->
         </select>
 
         <input type="submit">

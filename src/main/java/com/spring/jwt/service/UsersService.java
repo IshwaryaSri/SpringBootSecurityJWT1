@@ -1,7 +1,6 @@
 package com.spring.jwt.service;
 
 import com.spring.jwt.UserPrincipal;
-import com.spring.jwt.entity.AuthenticationProvider;
 import com.spring.jwt.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -52,11 +51,23 @@ public class UsersService implements UserDetailsService {
         return userExists;
     }
 
-    public void saveOAuth2LoginUser(String email,AuthenticationProvider provider) {
+    public void saveOAuth2LoginUser(String email,String provider) {
         Users user = new Users();
         user.setEmail(email);
         user.setJoiningDate(new Date());
         user.setAuthProvider(provider);
+        userRepository.save(user);
+    }
+
+    public boolean existsByToken(String token) {
+        boolean tokenExists = userRepository.existsByToken(token);
+        return tokenExists;
+    }
+
+    public void updateUser(String email, String token) {
+        Users user = new Users();
+        user.setEmail(email);
+        user.setToken(token);
         userRepository.save(user);
     }
 }

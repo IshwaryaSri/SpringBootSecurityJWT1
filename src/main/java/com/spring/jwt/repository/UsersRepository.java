@@ -6,11 +6,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UsersRepository extends CrudRepository<Users, Integer> {
+public interface UsersRepository extends JpaRepository<Users, Integer> {
 
     boolean existsByEmail(String email);
 
     Users findByEmail(String email);
+
+    boolean existsByToken(String token);
 
 
 }

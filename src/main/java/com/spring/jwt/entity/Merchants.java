@@ -10,9 +10,17 @@ public class Merchants {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name="email")
     private String email;
+
+    @Column(name="password")
     private String password;
+
+    @Column(name="token")
     private String accessToken;
+
+    @Column(name="is_verified")
     private boolean isVerified;
 
     @ManyToOne(cascade = CascadeType.ALL)
